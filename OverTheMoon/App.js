@@ -9,21 +9,50 @@
 import React, {Component} from 'react';
 import {Platform, StyleSheet, Text, View} from 'react-native';
 
-const instructions = Platform.select({
-  ios: 'Press Cmd+R to reload,\n' + 'Cmd+D or shake for dev menu',
-  android:
-    'Double tap R on your keyboard to reload,\n' +
-    'Shake or press menu button for dev menu',
-});
 
-type Props = {};
-export default class App extends Component<Props> {
+
+let colors = ['red','blue','green','black','orange','purple','pink'];
+
+
+
+getRandomColor = ()=>{
+
+  let indexOfColor = Math.floor(Math.random * colors.length);
+  return colors[indexOfColor];
+}
+
+createTable = () => {
+    let table = []
+    
+    // Outer loop to create rows
+    for (let i = 0; i < 18; i++) {
+      
+      let children = []
+      //Inner loop to create columns
+      for (let j = 0; j < 11; j++) {
+        let randomColor = getRandomColor();
+        console.log(randomColor);
+        children.push(<View key={`Col ${j + 1}${i}`} style={[styles.row, {backgroundColor:'red'}]}></View>)
+      }
+      //Create the parent and add the children
+      table.push(<View key={`Col ${1}${i}b`} style={styles.column}>{children}</View>)
+    }
+    return table
+  }
+
+export default class App extends Component {
+
+  constructor(props) {
+  super(props);
+    this.state = {
+    selectedColor: 'blue',
+  };
+}
+
   render() {
     return (
       <View style={styles.container}>
-        <Text style={styles.welcome}>Welcome to React Native!</Text>
-        <Text style={styles.instructions}>To get started, edit App.js</Text>
-        <Text style={styles.instructions}>{instructions}</Text>
+        {createTable()}
       </View>
     );
   }
@@ -32,18 +61,14 @@ export default class App extends Component<Props> {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
     backgroundColor: '#F5FCFF',
+    padding:50
   },
-  welcome: {
-    fontSize: 20,
-    textAlign: 'center',
-    margin: 10,
+  column: {
+    flex:1,
+    flexDirection:'row'
   },
-  instructions: {
-    textAlign: 'center',
-    color: '#333333',
-    marginBottom: 5,
-  },
+  row : {
+    flex:1
+  }
 });
